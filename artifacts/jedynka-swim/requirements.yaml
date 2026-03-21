@@ -1,0 +1,20 @@
+packages:
+  "framer-motion": "For premium page transitions and scroll-reveals"
+  "date-fns": "For formatting article publish dates beautifully"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility for merging tailwind classes without style conflicts"
+  "react-hook-form": "For robust handling of the Admin CMS forms"
+  "@hookform/resolvers": "Zod validation integration for Admin CMS forms"
+
+images:
+  - path: "artifacts/jedynka-swim/public/images/logo.png"
+    description: "Minimalist modern abstract wave logo for a premium swimming club, deep blue and vibrant aqua cyan gradients, clean lines, on transparent background"
+    aspect_ratio: "1:1"
+  - path: "artifacts/jedynka-swim/public/images/water-texture.png"
+    description: "Abstract premium stylized water ripples pattern, deep navy blue and glowing cyan, subtle depth, suitable for a dark mode section background"
+    aspect_ratio: "16:9"
+
+notes:
+  - Application uses REST API endpoints via @workspace/api-client-react hooks
+  - Admin CMS protected by simple hardcoded state password "jedynka2024"
+  - Theme toggling managed via native dark class on the HTML element
