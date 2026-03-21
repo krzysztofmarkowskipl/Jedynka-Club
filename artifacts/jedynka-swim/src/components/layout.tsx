@@ -1,9 +1,10 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Droplets, Sun, Moon, MapPin, Phone, Mail, ChevronRight } from "lucide-react";
+import { Menu, X, Droplets, Sun, Moon, MapPin, Phone, Mail, ChevronRight, Search } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
+import { useListNews } from "@workspace/api-client-react";
 
 const NAV_LINKS = [
   { href: "/", label: "Strona Główna" },
@@ -17,8 +18,21 @@ const NAV_LINKS = [
 export function Layout({ children }: { children: ReactNode }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [location] = useLocation();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [location, navigate] = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const { data: allNews } = useListNews();
+
+  const searchResults = searchQuery.trim().length >= 2
+    ? (allNews ?? []).filter(
+        (a) =>
+          a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          a.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 5)
+    : [];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,8 +44,27 @@ export function Layout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setIsSearchOpen(false);
+    setSearchQuery("");
     window.scrollTo(0, 0);
   }, [location]);
+
+  useEffect(() => {
+    if (isSearchOpen) {
+      setTimeout(() => searchInputRef.current?.focus(), 50);
+    }
+  }, [isSearchOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setIsSearchOpen(false);
+        setSearchQuery("");
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col relative selection:bg-primary/30 selection:text-primary">
@@ -84,7 +117,85 @@ export function Layout({ children }: { children: ReactNode }) {
               ))}
             </nav>
 
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-2">
+              {/* Search */}
+              <div ref={searchContainerRef} className="relative">
+                <div className={cn(
+                  "flex items-center transition-all duration-300 rounded-full overflow-visible",
+                  isSearchOpen
+                    ? "bg-background/90 backdrop-blur-md border border-border/60 shadow-md pl-3 pr-1 py-1"
+                    : ""
+                )}>
+                  <AnimatePresence>
+                    {isSearchOpen && (
+                      <motion.input
+                        ref={searchInputRef}
+                        key="search-input"
+                        initial={{ width: 0, opacity: 0 }}
+                        animate={{ width: 180, opacity: 1 }}
+                        exit={{ width: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        type="text"
+                        placeholder="Szukaj..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Escape") { setIsSearchOpen(false); setSearchQuery(""); }
+                        }}
+                        className="bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none w-full"
+                      />
+                    )}
+                  </AnimatePresence>
+                  <button
+                    onClick={() => { setIsSearchOpen(!isSearchOpen); if (isSearchOpen) setSearchQuery(""); }}
+                    className={cn(
+                      "p-2.5 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 shrink-0",
+                      !isScrolled && location === '/' && !isSearchOpen
+                        ? "bg-black/20 text-white hover:bg-black/40 backdrop-blur-md"
+                        : "bg-muted text-foreground hover:bg-muted/80"
+                    )}
+                    aria-label="Wyszukaj"
+                  >
+                    {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+                  </button>
+                </div>
+
+                {/* Search results dropdown */}
+                <AnimatePresence>
+                  {isSearchOpen && searchQuery.trim().length >= 2 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-2 w-80 bg-background/95 backdrop-blur-xl border border-border/60 rounded-2xl shadow-xl overflow-hidden z-50"
+                    >
+                      {searchResults.length > 0 ? (
+                        <div className="py-2">
+                          <p className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            Aktualności
+                          </p>
+                          {searchResults.map((article) => (
+                            <button
+                              key={article.id}
+                              onClick={() => { navigate("/aktualnosci"); setIsSearchOpen(false); setSearchQuery(""); }}
+                              className="w-full text-left px-4 py-3 hover:bg-muted transition-colors flex flex-col gap-0.5"
+                            >
+                              <span className="text-sm font-medium text-foreground line-clamp-1">{article.title}</span>
+                              <span className="text-xs text-muted-foreground line-clamp-1">{article.excerpt}</span>
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="px-4 py-6 text-center text-sm text-muted-foreground">
+                          Brak wyników dla „{searchQuery}"
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               <button
                 onClick={toggleTheme}
                 className={cn(
@@ -143,6 +254,43 @@ export function Layout({ children }: { children: ReactNode }) {
               className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl absolute top-full left-0 w-full overflow-hidden"
             >
               <div className="px-4 py-6 space-y-2">
+                {/* Mobile search */}
+                <div className="relative mb-4">
+                  <div className="flex items-center bg-muted rounded-xl px-3 py-2 gap-2">
+                    <Search className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <input
+                      type="text"
+                      placeholder="Szukaj..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none w-full"
+                    />
+                    {searchQuery && (
+                      <button onClick={() => setSearchQuery("")}>
+                        <X className="w-4 h-4 text-muted-foreground" />
+                      </button>
+                    )}
+                  </div>
+                  {searchQuery.trim().length >= 2 && (
+                    <div className="mt-1 bg-background border border-border/60 rounded-xl overflow-hidden shadow-lg">
+                      {searchResults.length > 0 ? (
+                        searchResults.map((article) => (
+                          <button
+                            key={article.id}
+                            onClick={() => { navigate("/aktualnosci"); setIsMobileMenuOpen(false); setSearchQuery(""); }}
+                            className="w-full text-left px-4 py-3 hover:bg-muted transition-colors border-b border-border/30 last:border-0"
+                          >
+                            <p className="text-sm font-medium text-foreground line-clamp-1">{article.title}</p>
+                            <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{article.excerpt}</p>
+                          </button>
+                        ))
+                      ) : (
+                        <p className="px-4 py-3 text-sm text-muted-foreground">Brak wyników dla „{searchQuery}"</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+
                 {NAV_LINKS.map((link) => (
                   <Link
                     key={link.href}
