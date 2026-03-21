@@ -15,8 +15,8 @@ export default function Home() {
         {/* landing page hero scenic swimming pool underwater athlete */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://pixabay.com/get/gba3ac7d09326b3b4c5b30eb4b098b12a2f1511d1e12b4002ec0ee007f0972c28b58afa5a1a03cfbf14d3743d6eef5d15bd64939ececd9c70f7f6eae14030e89f_1280.jpg"
-            alt="Swimmer underwater"
+            src="/images/hero-swimmer.png"
+            alt="Pływak sportowy podczas wyścigu"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-black/60" />
