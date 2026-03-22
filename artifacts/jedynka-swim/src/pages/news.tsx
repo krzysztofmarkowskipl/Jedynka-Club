@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { useListNews } from "@workspace/api-client-react";
 import { formatDate } from "@/lib/utils";
 
@@ -52,9 +53,9 @@ export default function News() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="bg-card rounded-3xl overflow-hidden shadow-md border border-border/50 hover:shadow-xl transition-shadow duration-300 flex flex-col group"
+                  className="bg-card rounded-3xl overflow-hidden shadow-md border border-border/50 hover:shadow-xl transition-all duration-300 flex flex-col group"
                 >
-                  <div className="h-56 overflow-hidden relative">
+                  <Link href={`/aktualnosci/${article.id}`} className="block h-56 overflow-hidden relative">
                     {article.imageUrl ? (
                       <img src={article.imageUrl} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     ) : (
@@ -62,18 +63,26 @@ export default function News() {
                         <span className="font-display font-bold text-3xl text-primary/20">KP JEDYNKA</span>
                       </div>
                     )}
-                  </div>
+                  </Link>
                   <div className="p-8 flex flex-col flex-1">
                     <div className="flex items-center gap-2 text-sm font-medium text-primary mb-4">
                       <Calendar className="w-4 h-4" />
                       {formatDate(article.publishedAt)}
                     </div>
-                    <h3 className="text-2xl font-bold font-display mb-4 text-foreground leading-tight">
-                      {article.title}
-                    </h3>
+                    <Link href={`/aktualnosci/${article.id}`}>
+                      <h3 className="text-2xl font-bold font-display mb-4 text-foreground leading-tight hover:text-primary transition-colors">
+                        {article.title}
+                      </h3>
+                    </Link>
                     <p className="text-muted-foreground line-clamp-3 mb-6 flex-1">
-                      {article.content}
+                      {article.excerpt || article.content}
                     </p>
+                    <Link
+                      href={`/aktualnosci/${article.id}`}
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all duration-200"
+                    >
+                      Czytaj więcej <ArrowRight className="w-4 h-4" />
+                    </Link>
                   </div>
                 </motion.article>
               ))}

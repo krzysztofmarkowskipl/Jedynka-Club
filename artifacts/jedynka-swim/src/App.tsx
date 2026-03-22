@@ -5,6 +5,7 @@ import { Layout } from "@/components/layout";
 // Pages
 import Home from "@/pages/home";
 import News from "@/pages/news";
+import NewsDetail from "@/pages/news-detail";
 import Athletes from "@/pages/athletes";
 import Achievements from "@/pages/achievements";
 import Contact from "@/pages/contact";
@@ -27,6 +28,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/aktualnosci" component={News} />
+        <Route path="/aktualnosci/:id" component={NewsDetail} />
         <Route path="/zawodnicy" component={Athletes} />
         <Route path="/osiagniecia" component={Achievements} />
         <Route path="/kontakt" component={Contact} />
