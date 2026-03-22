@@ -2,12 +2,12 @@ import { motion } from "framer-motion";
 import { User } from "lucide-react";
 
 const ATHLETES = [
-  { name: "Anna Kowalska", age: 19, style: "Styl wolny", events: "200m, 400m", image: "https://images.unsplash.com/photo-1532454524419-75be0381665e?q=80&w=800&auto=format&fit=crop" },
-  { name: "Michał Nowak", age: 22, style: "Motyl", events: "100m, 200m", image: "https://images.unsplash.com/photo-1554047806-cfbe1b4e28c3?q=80&w=800&auto=format&fit=crop" },
-  { name: "Katarzyna Wiśniewska", age: 17, style: "Grzbietowy", events: "50m, 100m", image: "https://images.unsplash.com/photo-1560086968-305eb9f2702d?q=80&w=800&auto=format&fit=crop" },
-  { name: "Piotr Zając", age: 21, style: "Żabka", events: "100m, 200m", image: "https://images.unsplash.com/photo-1615818985160-5f21422ab1a0?q=80&w=800&auto=format&fit=crop" },
-  { name: "Marta Kamińska", age: 20, style: "Czterostyl", events: "200m, 400m", image: "https://images.unsplash.com/photo-1517438476312-10d79c077509?q=80&w=800&auto=format&fit=crop" },
-  { name: "Tomasz Lewandowski", age: 23, style: "Styl wolny", events: "50m, 100m", image: "https://images.unsplash.com/photo-1526550517342-e086b387edda?q=80&w=800&auto=format&fit=crop" },
+  { name: "Anna Kowalska", age: 19, style: "Styl wolny", events: "200m, 400m", image: "/images/athletes/anna-kowalska.png" },
+  { name: "Michał Nowak", age: 22, style: "Motyl", events: "100m, 200m", image: "/images/athletes/michal-nowak.png" },
+  { name: "Katarzyna Wiśniewska", age: 17, style: "Grzbietowy", events: "50m, 100m", image: "/images/athletes/katarzyna-wisniewska.png" },
+  { name: "Piotr Zając", age: 21, style: "Żabka", events: "100m, 200m", image: "/images/athletes/piotr-zajac.png" },
+  { name: "Marta Kamińska", age: 20, style: "Czterostyl", events: "200m, 400m", image: "/images/athletes/marta-kaminska.png" },
+  { name: "Tomasz Lewandowski", age: 23, style: "Styl wolny", events: "50m, 100m", image: "/images/athletes/tomasz-lewandowski.png" },
 ];
 
 export default function Athletes() {

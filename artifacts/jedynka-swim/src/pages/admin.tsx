@@ -27,6 +27,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   
@@ -77,11 +78,11 @@ export default function Admin() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === "jedynka2024") {
+    if (username === "admin" && password === "KPJedynka@2024") {
       setIsAuthenticated(true);
       setError("");
     } else {
-      setError("Nieprawidłowe hasło");
+      setError("Nieprawidłowy login lub hasło");
     }
   };
 
@@ -149,13 +150,22 @@ export default function Admin() {
           <h1 className="font-display font-bold text-3xl mb-2 text-foreground">Panel CMS</h1>
           <p className="text-muted-foreground mb-8">Zaloguj się, aby zarządzać treścią</p>
           
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div className="space-y-2">
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="space-y-3">
+              <input
+                type="text"
+                placeholder="Login"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
+                className="w-full px-4 py-3 rounded-xl bg-background border border-border text-center text-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
               <input
                 type="password"
-                placeholder="Hasło dostępowe"
+                placeholder="Hasło"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
                 className="w-full px-4 py-3 rounded-xl bg-background border border-border text-center text-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
               />
               {error && <p className="text-destructive text-sm font-medium">{error}</p>}

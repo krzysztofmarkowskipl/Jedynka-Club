@@ -11,7 +11,6 @@ const NAV_LINKS = [
   { href: "/aktualnosci", label: "Aktualności" },
   { href: "/zawodnicy", label: "Zawodnicy" },
   { href: "/osiagniecia", label: "Osiągnięcia" },
-  { href: "/galeria", label: "Galeria" },
   { href: "/kontakt", label: "Kontakt" },
 ];
 
