@@ -11,51 +11,53 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-        {/* landing page hero scenic swimming pool underwater athlete */}
+      <section className="relative h-screen min-h-[600px] overflow-hidden">
+        {/* Background image */}
         <div className="absolute inset-0 z-0">
           <img
             src="/images/hero-swimmer.png"
             alt="Pływak sportowy podczas wyścigu"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-black/60" />
-          <div className="absolute inset-0 bg-blue-900/20 mix-blend-multiply" />
+          {/* Gradient only at bottom and left edge — center stays clear */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center mt-20">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <span className="inline-block py-1 px-3 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 text-primary-foreground text-sm font-semibold mb-6 shadow-[0_0_15px_rgba(var(--primary),0.3)]">
-              Oficjalna strona klubu
-            </span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-extrabold text-white tracking-tight mb-6 drop-shadow-lg">
-              Klub Pływacki <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-primary drop-shadow-none">
-                Jedynka
-              </span>
-            </h1>
-            <p className="mt-6 text-lg md:text-xl text-zinc-200 max-w-2xl mx-auto leading-relaxed font-light drop-shadow-md">
-              Dołącz do społeczności mistrzów. Trenuj z najlepszymi, przekraczaj własne granice i zdobywaj medale.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/kontakt" 
-                className="px-8 py-4 rounded-full font-bold text-lg bg-gradient-to-r from-primary to-blue-600 text-white shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 hover:-translate-y-1 transition-all duration-300"
-              >
-                Dołącz do nas
-              </Link>
-              <Link 
-                href="/aktualnosci" 
-                className="px-8 py-4 rounded-full font-bold text-lg bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 hover:-translate-y-1 transition-all duration-300"
-              >
-                Zobacz nowości
-              </Link>
-            </div>
-          </motion.div>
+        {/* Content pinned to bottom-left */}
+        <div className="absolute inset-0 z-10 flex items-end">
+          <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 w-full pb-20 md:pb-28">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="max-w-xl"
+            >
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-extrabold text-white tracking-tight leading-none mb-4 drop-shadow-lg">
+                Klub Pływacki<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+                  Jedynka
+                </span>
+              </h1>
+              <p className="text-base md:text-lg text-white/75 leading-relaxed font-light mb-8 max-w-sm">
+                Trenuj z najlepszymi, przekraczaj własne granice i zdobywaj medale.
+              </p>
+              <div className="flex flex-row gap-3">
+                <Link
+                  href="/kontakt"
+                  className="px-6 py-3 rounded-full font-bold text-sm bg-gradient-to-r from-primary to-blue-600 text-white shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  Dołącz do nas
+                </Link>
+                <Link
+                  href="/aktualnosci"
+                  className="px-6 py-3 rounded-full font-bold text-sm bg-white/10 backdrop-blur-md border border-white/25 text-white hover:bg-white/20 hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  Aktualności
+                </Link>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
